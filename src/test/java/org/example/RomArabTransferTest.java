@@ -1,7 +1,20 @@
 package org.example;
 
-public class RomArabTransfer {
-    public static int RomToArab(String input){
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class RomArabTransferTest {
+    @Test
+    void Start() {
+    String input = "VIII*IX";
+    int var1 = 89;
+    String var2 = "I";
+        System.out.println(arabToRom(var1));
+        System.out.println(romToArab(var2));
+    }
+    @Test
+    public static int romToArab(String input) {
         String[] RomanSymb = new String[]{"I","II","III","IV","V","VI","VII","VIII","IX","X"};
         int ArabDigOfRomanSymb=0;
         for (int i = 0; i < RomanSymb.length; i++) {
@@ -18,7 +31,8 @@ public class RomArabTransfer {
         }
         return ArabDigOfRomanSymb;
     }
-    public static String ArabToRom(int input){
+    @Test
+    public static String arabToRom(int input){
         String[] RomanSymb = new String[]{"I","II","III","IV","V","VI","VII","VIII","IX","X","XL","L","X","XC"};
         String RomSymbOfArabDig = null;
         if
@@ -79,4 +93,5 @@ public class RomArabTransfer {
         else
             out = "XC" + ArabToRom_1to10(input-dozen);
         return out;
-    }}
+    }
+}

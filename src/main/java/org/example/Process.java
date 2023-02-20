@@ -1,125 +1,143 @@
 package org.example;
 
 public class Process {
-    public static void GeneralErrorCheck (String input) {
-        String VarTemp1 = null;
-        String VarTemp2 = null;
-        int DivisionIndex = 0;
-        int AmountOperators = 0;
-        String operators = "+-/*";
-        //поиск оператора как разделитель операндов
-        for (int i = 0; i <input.length(); i++) {
-            for (int j = 0; j <operators.length(); j++) {
-                if (input.substring(i)==operators.substring(j)) {
-                    if (AmountOperators>1){
-                        System.out.println("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-                        Restart.YesNoQestion();}
-                    else{
-                        DivisionIndex=i;
-                        AmountOperators++;
-                        VarTemp1 = input.substring(0,i);}
-                }
-            }
-        }
-        VarTemp2 = input.substring((input.length()-DivisionIndex),input.length());
-
-        //проверка переменных на лишние символы в выражении и на однотипность
-        CheckWrongInputTextAndValue(VarTemp1, VarTemp2);
+    public static void GeneralErrorCheck(String input) {
+        //Проверка колличества операторов в вырожении
+        OperatorsAmountCheck(input);
+        //Определение индекса оператора для разделения операндов
+        int DivisionIndex = OperatorDivisionIndex(input);
+        //Деление введеного выражение на операнды вокруг оператора с созданием строковвых полей
+        String VarTemp1 = input.substring(0,DivisionIndex);
+        String VarTemp2 = input.substring(DivisionIndex+1, input.length());
+        //Проверка на однотипность введеных данных и их значени в рамках от 1 до 10 включительно
+        CheckWrongInputTextAndValue(VarTemp1,VarTemp2);
     }
-    public static void CheckWrongInputTextAndValue(String var1, String var2){
+    public static void CheckWrongInputTextAndValue(String var1, String var2) {
         if (ArabSymbUseCheck(var1)) {
-            if (ArabSymbUseCheck(var2)){
+            if (ArabSymbUseCheck(var2)) {
                 Calculator.CalculationType = 1;
                 ValueCheck(Integer.parseInt(var1), Integer.parseInt(var2));
+            } else {
+                System.out.println("Калькулятор умеет работать только с арабскими или римскими цифрами одновременно.");
+                Restart.YesNoQestion();
             }
-            else{
+        } else {
+            if (RomanSymbUseCheck(var1)) {
+                if (RomanSymbUseCheck(var2)) {
+                    Calculator.CalculationType = 2;
+                    ValueCheck(RomArabTransfer.RomToArab(var1), RomArabTransfer.RomToArab(var2));
+                } else {
+                    System.out.println("Калькулятор умеет работать только с арабскими или римскими цифрами одновременно.");
+                    Restart.YesNoQestion();
+                }
+            } else {
                 System.out.println("Калькулятор умеет работать только с арабскими или римскими цифрами одновременно.");
                 Restart.YesNoQestion();
             }
         }
-        else {
-            if (RomanSymbUseCheck(var1)) {
-                if (RomanSymbUseCheck(var2)) {
-                    Calculator.CalculationType = 2;
-                    ValueCheck(RomArabTransfer.RomToArab(var1),RomArabTransfer.RomToArab(var2));
-                }
-                else{
-                    System.out.println("Калькулятор умеет работать только с арабскими или римскими цифрами одновременно.");
-                    Restart.YesNoQestion();
-                }
-            }
-            else{
-                System.out.println("Калькулятор умеет работать только с арабскими или римскими цифрами одновременно.");
-                Restart.YesNoQestion();}
-        }
     }
-    public static boolean RomanSymbUseCheck (String input) {
+    public static boolean RomanSymbUseCheck(String input) {
         String[] RomSymb = new String[]{"I", "V", "X"};
-        int TempVar = 0;
-        for (int i = 0; i < input.length(); i++)
+        int NotRomSymbOrWrongCase = 0;
+        boolean TrFls;
+        for (int i = 0; i < input.length(); i++){
             for (int j = 0; j < RomSymb.length; j++) {
-                if (input.substring(i).equals(RomSymb[j]))
-                    continue;
-                else
-                    TempVar++;
+                if (input.substring(i,i+1).equals(RomSymb[j])){
+                    break;
+                }
+                else {
+                    if (j==RomSymb.length-1)
+                        NotRomSymbOrWrongCase++;
+                }
             }
-
-        return true;
-    }
-    public static boolean ArabSymbUseCheck (String input) {
-        boolean isFullyArab = false;
-        for (int i = 0; i < input.length(); i++) {
-            if (Character.isDigit(Integer.parseInt(input.substring(i))))
-                isFullyArab = true;
-            else
-                isFullyArab = false;
         }
-        return isFullyArab;
+        if (NotRomSymbOrWrongCase>0)
+            TrFls=false;
+        else
+            TrFls=true;
+
+        return TrFls;
+    }
+    public static boolean ArabSymbUseCheck(String input) {
+        String[] RomSymb = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        int NotRomSymbOrWrongCase = 0;
+        boolean TrFls;
+        for (int i = 0; i < input.length(); i++) {
+            for (int j = 0; j < RomSymb.length; j++) {
+                if (input.substring(i,i+1).equals(RomSymb[j])){
+                    break;
+                }
+                else {
+                    if (j==RomSymb.length-1)
+                        NotRomSymbOrWrongCase++;
+                }
+            }
+        }
+        if (NotRomSymbOrWrongCase>0)
+            TrFls=false;
+        else
+            TrFls=true;
+
+        return TrFls;
     }
     public static void ValueCheck(int var1, int var2) {
-        if (var1>=1 && var1<=10 && var2>=1 && var2<=10) {
-        }
-        else {
+        if (var1 >= 1 && var1 <= 10 && var2 >= 1 && var2 <= 10) {
+        } else {
             System.out.println("Калькулятор принимает на вход числа от 1 до 10 включительно, не более.");
             Restart.YesNoQestion();
         }
     }
-    public static int getVar1 (String input) {
-            String VarTemp1 = null;
-            String operators = "+-/*";
-            int Var1ForCalc;
-            //поиск оператора как разделитель операндов
-            for (int i = 0; i < input.length(); i++) {
-                for (int j = 0; j < operators.length(); j++) {
-                    if (input.substring(i) == operators.substring(j)) {
-                        VarTemp1 = input.substring(0, i);
+    public static int getVar1(String input) {
+        int Var1ForCalc = 0;
+        if (Calculator.CalculationType == 1)
+            Var1ForCalc = Integer.parseInt(input.substring(0,OperatorDivisionIndex(input)));
+        else if (Calculator.CalculationType == 2)
+            Var1ForCalc = RomArabTransfer.RomToArab(input.substring(0,OperatorDivisionIndex(input)));
+        else {
+            System.out.println("Введенные данные не корректны.");
+            Restart.YesNoQestion();
+        }
+        return Var1ForCalc;
+    }
+    public static int getVar2(String input) {
+        int Var2ForCalc = 0;
+        if (Calculator.CalculationType == 1)
+            Var2ForCalc = Integer.parseInt(input.substring(OperatorDivisionIndex(input)+1,input.length()));
+        else if (Calculator.CalculationType == 2)
+            Var2ForCalc = RomArabTransfer.RomToArab(input.substring(OperatorDivisionIndex(input)+1,input.length()));
+        else {
+            System.out.println("Введенные данные не корректны.");
+            Restart.YesNoQestion();
+        }
+        return Var2ForCalc;
+    }
+    public static void OperatorsAmountCheck(String input) {
+        String operators = "+-/*";
+        int amount = 0;
+        for (int i = 0; i < operators.length(); i++) {
+            for (int j = 0; j < input.length(); j++) {
+                if (operators.substring(i,i+1).equals(input.substring(j,j+1))) {
+                    amount++;
+                    if (amount > 1) {
+                        System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+                        Restart.YesNoQestion();
                     }
                 }
             }
-            if (Calculator.CalculationType==1)
-                Var1ForCalc = Integer.parseInt(VarTemp1);
-            else {
-                Var1ForCalc = RomArabTransfer.RomToArab(VarTemp1);
-            }
-            return Var1ForCalc;
+        }
     }
-    public static int getVar2 (String input) {
-            String VarTemp2 = null;
-            String operators = "+-/*";
-            int Var2ForCalc;
-            //поиск оператора как разделитель операндов
-            for (int i = 0; i < input.length(); i++) {
-                for (int j = 0; j < operators.length(); j++) {
-                    if (input.substring(i) == operators.substring(j)) {
-                        VarTemp2 = input.substring(i, input.length());
-                    }
+    public static int OperatorDivisionIndex (String input) {
+        int indx = 0;
+        String operators = "+-/*";
+        //поиск оператора как разделитель операндов
+        for (int i = 0; i <input.length(); i++) {
+            for (int j = 0; j <operators.length(); j++) {
+                if (input.substring(i,i+1).equals(operators.substring(j,j+1))) {
+                    indx=i;
                 }
             }
-            if (Calculator.CalculationType==1)
-                Var2ForCalc = Integer.parseInt(VarTemp2);
-            else {
-                Var2ForCalc = RomArabTransfer.RomToArab(VarTemp2);
-            }
-            return Var2ForCalc;
+        }
+        return indx;
     }
+
 }
