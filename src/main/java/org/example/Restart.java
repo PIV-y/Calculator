@@ -11,6 +11,7 @@ public class Restart {
             Calculator.calculate();
         else {
                 System.out.println("Расчет будет завершен");
+                System.exit(0);
         }
     }
 }

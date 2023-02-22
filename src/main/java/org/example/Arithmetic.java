@@ -10,6 +10,11 @@ public class Arithmetic {
             case "+": result = var1+var2; break;
             case "-": result = var1-var2; break;
         }
+        if (Calculator.CalculationType==2)
+            if (result<1) {
+                System.out.println("Резальтатом работы калькулятора с римскими числами могут быть только положительные целые числа и не равные нулю.");
+                Restart.YesNoQestion();
+            }
         return result;
     }
 }

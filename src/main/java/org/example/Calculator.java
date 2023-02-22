@@ -18,6 +18,7 @@ public class Calculator {
         CalculationPair.setVar2(Process.getVar2(input));
         //Расчет
         int result =  Arithmetic.Operation(CalculationPair.getVar1(),CalculationPair.getVar2(),input);
+
         if (Calculator.CalculationType==1)
             System.out.println(input + " = " +result);
         else {

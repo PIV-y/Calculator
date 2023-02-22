@@ -11,7 +11,6 @@ public class RomArabTransfer {
             }
             else {
                 if (i==RomanSymb.length-1){
-                    System.out.println("stop");
                     break;
                 }
             }
