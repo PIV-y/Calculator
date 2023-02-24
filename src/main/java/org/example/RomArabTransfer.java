@@ -20,15 +20,15 @@ public class RomArabTransfer {
     public static String ArabToRom(int input){
         String[] RomanSymb = new String[]{"I","II","III","IV","V","VI","VII","VIII","IX","X","XL","L","X","XC"};
         String RomSymbOfArabDig = null;
-        if
-        (input<0){System.out.println("stop");
+        if (input<0) {
+            System.out.println("stop");
         } else if (input==0){ RomSymbOfArabDig="0";
-        } else if (input>0 && input<=10){ RomSymbOfArabDig=ArabToRom_1to10(input);
-        } else if (input>10 && input<=20){ RomSymbOfArabDig=ArabToRom_11to20(input);
-        } else if (input>20 && input<=39){ RomSymbOfArabDig=ArabToRom_21to39(input);
-        } else if (input>=40 && input<50){ RomSymbOfArabDig=ArabToRom_40to49(input);
-        } else if (input>=50 && input<=89){ RomSymbOfArabDig=ArabToRom_50to89(input);
-        } else if (input>=90 && input<=99){ RomSymbOfArabDig=ArabToRom_90to99(input);
+        } else if ((input>0) && (input<=10)){ RomSymbOfArabDig=ArabToRom_1to10(input);
+        } else if ((input>10) && (input<=20)){ RomSymbOfArabDig=ArabToRom_11to20(input);
+        } else if ((input>20) && (input<=39)){ RomSymbOfArabDig=ArabToRom_21to39(input);
+        } else if ((input>=40) && (input<50)){ RomSymbOfArabDig=ArabToRom_40to49(input);
+        } else if ((input>=50) && (input<=89)){ RomSymbOfArabDig=ArabToRom_50to89(input);
+        } else if ((input>=90) && (input<=99)){ RomSymbOfArabDig=ArabToRom_90to99(input);
         } else if (input==100){RomSymbOfArabDig="C";
         }
         return RomSymbOfArabDig;
